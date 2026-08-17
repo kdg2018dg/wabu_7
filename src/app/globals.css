@@ -51,6 +51,14 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* 한글 단어가 문장 중간에서 어색하게 줄바꿈되지 않도록 (공백 기준으로만 줄바꿈) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 버튼/뱃지/라벨처럼 한 줄에 붙어있어야 하는 짧은 텍스트는 줄바꿈 자체를 막는다 */
+button, .btn-primary, .btn-secondary, .btn-ghost, label {
+  word-break: keep-all;
 }
 
 @media (prefers-reduced-motion: reduce) {

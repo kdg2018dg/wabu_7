@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, Pill } from "@/components/Card";
+import { ClickableImage } from "@/components/Lightbox";
 import { CATEGORY_LABEL, CATEGORY_ICON } from "@/lib/schedule";
 import type { DateSchedule } from "@/lib/period-schedule";
 
@@ -58,8 +59,7 @@ export function PeriodScheduleReadOnly({
                       )}
                       {n.content && <p className="whitespace-pre-line text-sm">{n.content}</p>}
                       {n.imageUrl && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={n.imageUrl} alt="첨부 사진" className="mt-1.5 max-h-48 rounded-lg object-cover" />
+                        <ClickableImage src={n.imageUrl} alt="첨부 사진" className="mt-1.5 max-h-48 rounded-lg object-cover" />
                       )}
                     </div>
                   ))}

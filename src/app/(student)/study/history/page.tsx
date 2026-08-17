@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSignedImageUrls } from "@/lib/storage";
 import { formatMinutes, formatDateKorean, formatShortDate, lastNDays, todayKST, getWeekRange, getPreviousWeekRange } from "@/lib/time";
 import { Card, Pill } from "@/components/Card";
+import { ClickableImage } from "@/components/Lightbox";
 import { PageHeader } from "@/components/PageHeader";
 import { BarChart } from "@/components/BarChart";
 import type { StudySession } from "@/lib/database.types";
@@ -96,8 +97,7 @@ export default async function StudyHistoryPage() {
         {withUrls.map((s) => (
           <Card key={s.id} className="flex gap-3 p-3">
             {s.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={s.imageUrl} alt="공부 인증 사진" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+              <ClickableImage src={s.imageUrl} alt="공부 인증 사진" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
             )}
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">

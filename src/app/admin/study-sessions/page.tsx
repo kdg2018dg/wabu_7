@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSignedImageUrls } from "@/lib/storage";
 import { formatMinutes, formatDateKorean } from "@/lib/time";
 import { Card, Pill } from "@/components/Card";
+import { ClickableImage } from "@/components/Lightbox";
 import type { StudySession, Profile } from "@/lib/database.types";
 import { SessionActions } from "./SessionActions";
 
@@ -68,8 +69,7 @@ export default async function AdminStudySessionsPage({
         {withUrls.map((s) => (
           <Card key={s.id} className="flex flex-col gap-3 p-4 md:flex-row md:items-start">
             {s.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <ClickableImage
                 src={s.imageUrl}
                 alt="인증 사진"
                 className="h-32 w-full shrink-0 rounded-xl object-cover md:h-24 md:w-24"

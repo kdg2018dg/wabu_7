@@ -1,14 +1,14 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { getWeeklyRankings, getPreviousWeekClassTotal } from "@/lib/queries";
 import { getDateSchedule, getNoteCounts } from "@/lib/period-schedule";
-import { formatMinutes, todayKST, formatDateKorean, getWeekRange } from "@/lib/time";
-import { Card, Pill } from "@/components/Card";
+import { todayKST, formatDateKorean } from "@/lib/time";
 import { Logo7 } from "@/components/Logo7";
 import { PeriodScheduleReadOnly } from "@/components/PeriodScheduleReadOnly";
 import { DatePickerNav } from "@/components/DatePickerNav";
-import type { Announcement } from "@/lib/database.types";
+import { Skeleton, SkeletonList } from "@/components/Skeleton";
+import { HomeSecondary } from "./HomeSecondary";
 
 function addDays(dateStr: string, delta: number) {
   const [y, m, d] = dateStr.split("-").map(Number);
@@ -30,31 +30,19 @@ export default async function HomePage({
 
   const upcomingDates = Array.from({ length: 7 }, (_, i) => addDays(today, i));
 
-  const [schedule, noteCounts, { data: announcements }, myWeek, { rows, classTotal, weekStart, weekEnd }, prevClassTotal] =
-    await Promise.all([
-      getDateSchedule(supabase, date, profile.id),
-      getNoteCounts(supabase, upcomingDates[0], upcomingDates[upcomingDates.length - 1]),
-      supabase
-        .from("announcements")
-        .select("*")
-        .order("is_important", { ascending: false })
-        .order("published_at", { ascending: false })
-        .limit(3) as unknown as Promise<{ data: Announcement[] | null }>,
-      getMyWeekMinutes(supabase, profile.id),
-      getWeeklyRankings(supabase),
-      getPreviousWeekClassTotal(supabase),
-    ]);
-
-  const myRank = rows.find((r) => r.user_id === profile.id);
-  const growthPct =
-    prevClassTotal > 0 ? Math.round(((classTotal - prevClassTotal) / prevClassTotal) * 100) : null;
+  // 핵심 기능(교시별 일정)만 먼저 가져와서 즉시 렌더링한다. 랭킹/공지 등 부가 정보는
+  // 아래 <Suspense> 로 감싸 별도 스트리밍하므로 이 데이터를 기다리지 않는다.
+  const [schedule, noteCounts] = await Promise.all([
+    getDateSchedule(supabase, date, profile.id),
+    getNoteCounts(supabase, upcomingDates[0], upcomingDates[upcomingDates.length - 1]),
+  ]);
 
   return (
     <div className="flex flex-col gap-4 px-5 pb-6 pt-6">
       <header className="flex items-center gap-3 md:hidden">
         <Logo7 size={22} />
         <div>
-          <h1 className="text-lg font-bold tracking-tight">7반 학급 운영센터</h1>
+          <h1 className="text-lg font-bold tracking-tight">와부고 7반 학급 운영센터</h1>
           <p className="text-sm text-[var(--color-ink-soft)]">{profile.name}님, 오늘도 같이 성장하는 7반</p>
         </div>
       </header>
@@ -84,7 +72,7 @@ export default async function HomePage({
                 <span className="whitespace-nowrap text-xs font-bold">{label}</span>
                 {count > 0 && (
                   <span
-                    className="rounded-full px-1.5 text-[10px] font-bold"
+                    className="whitespace-nowrap rounded-full px-1.5 text-[10px] font-bold"
                     style={{ background: isSelected ? "rgba(255,255,255,0.25)" : "var(--color-surface)" }}
                   >
                     메모 {count}
@@ -103,83 +91,22 @@ export default async function HomePage({
         + 공부시간 인증
       </Link>
 
-      <div className="grid grid-cols-2 gap-3">
-        <Card className="p-4">
-          <p className="text-xs font-medium text-[var(--color-ink-soft)]">이번 주 내 공부시간</p>
-          <p className="stat-figure mt-1 text-2xl font-extrabold">{formatMinutes(myWeek)}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs font-medium text-[var(--color-ink-soft)]">현재 순위</p>
-          <p className="stat-figure mt-1 text-2xl font-extrabold">
-            {myRank ? `${myRank.rank}위` : "-"}
-            <span className="text-sm font-medium text-[var(--color-ink-soft)]"> / {rows.length}명</span>
-          </p>
-        </Card>
-      </div>
-
-      <Card className="p-4">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-medium text-[var(--color-ink-soft)]">이번 주 우리 반 총 공부시간</p>
-          {growthPct !== null && (
-            <Pill tone={growthPct >= 0 ? "mint" : "muted"}>
-              {growthPct >= 0 ? `지난주 대비 +${growthPct}%` : `지난주 대비 ${growthPct}%`}
-            </Pill>
-          )}
-        </div>
-        <p className="stat-figure mt-1 text-2xl font-extrabold">{formatMinutes(classTotal)}</p>
-        <p className="mt-1 text-xs text-[var(--color-ink-soft)]">같이 성장하고 있어요.</p>
-      </Card>
-
-      <section>
-        <SectionTitle title="공지사항" href="/announcements" />
-        <Card className="divide-y divide-[var(--color-line)]">
-          {!announcements?.length ? (
-            <EmptyRow text="아직 공지사항이 없어요." />
-          ) : (
-            announcements.map((a) => (
-              <div key={a.id} className="px-4 py-3">
-                <div className="flex items-center gap-2">
-                  {a.is_important && <Pill tone="rose">중요</Pill>}
-                  <p className="truncate text-sm font-semibold">{a.title}</p>
-                </div>
-                <p className="mt-0.5 line-clamp-1 text-xs text-[var(--color-ink-soft)]">{a.content}</p>
-              </div>
-            ))
-          )}
-        </Card>
-      </section>
-
-      <p className="pt-1 text-center text-[11px] text-[var(--color-ink-soft)]">
-        {weekStart} ~ {weekEnd} 기준 · Asia/Seoul
-      </p>
+      <Suspense fallback={<HomeSecondaryFallback />}>
+        <HomeSecondary userId={profile.id} />
+      </Suspense>
     </div>
   );
 }
 
-async function getMyWeekMinutes(supabase: Awaited<ReturnType<typeof createClient>>, userId: string) {
-  const { start, end } = getWeekRange();
-  const { data } = await supabase
-    .from("study_sessions")
-    .select("duration_minutes")
-    .eq("user_id", userId)
-    .eq("status", "approved")
-    .gte("study_date", start)
-    .lte("study_date", end);
-
-  return (data ?? []).reduce((sum: number, r: { duration_minutes: number }) => sum + r.duration_minutes, 0);
-}
-
-function SectionTitle({ title, href }: { title: string; href: string }) {
+function HomeSecondaryFallback() {
   return (
-    <div className="mb-2 flex items-center justify-between px-1">
-      <h2 className="text-sm font-bold">{title}</h2>
-      <Link href={href} className="text-xs font-semibold text-[var(--color-brand)]">
-        더보기
-      </Link>
+    <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-2 gap-3">
+        <Skeleton className="h-20" />
+        <Skeleton className="h-20" />
+      </div>
+      <Skeleton className="h-24 w-full" />
+      <SkeletonList rows={3} rowHeight={56} />
     </div>
   );
-}
-
-function EmptyRow({ text }: { text: string }) {
-  return <p className="px-4 py-6 text-center text-sm text-[var(--color-ink-soft)]">{text}</p>;
 }

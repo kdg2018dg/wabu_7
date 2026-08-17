@@ -13,7 +13,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   return (
     <div className="flex min-h-screen flex-col">
       <DesktopNav name={profile.name} role={profile.role} />
-      <div className="mx-auto w-full max-w-2xl flex-1 pb-24 md:max-w-3xl md:pb-12">{children}</div>
+      <div className="mx-auto w-full max-w-2xl flex-1 pb-24 md:max-w-3xl md:pb-12 lg:max-w-4xl">{children}</div>
       <BottomNav />
     </div>
   );

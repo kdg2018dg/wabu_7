@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
   return (
     <div>
       <h1 className="mb-4 text-lg font-bold">대시보드</h1>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
         {stats.map((s) => (
           <Card key={s.label} className="p-4">
             <p className="text-xs font-medium text-[var(--color-ink-soft)]">{s.label}</p>

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "7반 학급 운영센터",
+    name: "와부고 7반 학급 운영센터",
     short_name: "7반",
     description: "공부시간 인증, 캘린더, 시간표, 공지사항, 물품 신청을 한곳에서",
     start_url: "/",

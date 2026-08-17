@@ -55,7 +55,7 @@ export default function LoginPage() {
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
           <Logo7 size={36} />
           <div>
-            <h1 className="text-xl font-bold">7반 학급 운영센터</h1>
+            <h1 className="text-xl font-bold">와부고 7반 학급 운영센터</h1>
             <p className="text-sm text-[var(--color-ink-soft)]">오늘도 같이 성장하는 7반</p>
           </div>
         </div>

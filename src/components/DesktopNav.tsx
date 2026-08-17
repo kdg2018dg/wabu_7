@@ -40,7 +40,7 @@ export function DesktopNav({ name, role }: { name: string; role: "student" | "ad
       <div className="mx-auto flex max-w-5xl items-center gap-6 px-6 py-3">
         <Link href="/" className="flex items-center gap-2">
           <Logo7 size={18} />
-          <span className="text-sm font-bold">7반 학급 운영센터</span>
+          <span className="text-sm font-bold">와부고 7반 학급 운영센터</span>
         </Link>
 
         <nav className="flex flex-1 items-center gap-1" aria-label="주요 메뉴">

@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "7반 학급 운영센터",
+  title: "와부고 7반 학급 운영센터",
   description: "7반 학급 운영 통합 웹앱 — 공부시간 인증, 캘린더, 물품 신청",
 };
 

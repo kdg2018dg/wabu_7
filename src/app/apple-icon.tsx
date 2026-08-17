@@ -15,12 +15,11 @@ export default function AppleIcon() {
           justifyContent: "center",
           background: "#3d4bff",
           borderRadius: 36,
-          fontSize: 100,
-          fontWeight: 900,
-          color: "#ffffff",
         }}
       >
-        7
+        <span style={{ fontSize: 100, fontWeight: 900, color: "#ffffff", lineHeight: 1, transform: "translateY(4px)" }}>
+          7
+        </span>
       </div>
     ),
     { ...size }

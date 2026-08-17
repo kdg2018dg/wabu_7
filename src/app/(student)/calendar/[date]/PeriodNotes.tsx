@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { compressImage } from "@/lib/image-compress";
 import { newImagePath, getSignedImageUrl, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
 import { addPeriodNote, deletePeriodNote } from "./actions";
+import { ClickableImage } from "@/components/Lightbox";
 import type { DailyPeriodNote } from "@/lib/database.types";
 
 interface NoteWithUrl extends DailyPeriodNote {
@@ -109,8 +110,7 @@ export function PeriodNotes({
             </button>
           </div>
           {note.imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={note.imageUrl} alt="첨부 사진" className="mt-2 max-h-48 rounded-lg object-cover" />
+            <ClickableImage src={note.imageUrl} alt="첨부 사진" className="mt-2 max-h-48 rounded-lg object-cover" />
           )}
         </div>
       ))}

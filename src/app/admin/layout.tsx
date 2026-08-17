@@ -45,7 +45,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <LogoutButton />
         </div>
       </aside>
-      <main className="flex-1 bg-[var(--color-canvas)] p-5">{children}</main>
+      <main className="flex-1 bg-[var(--color-canvas)] p-5">
+        <div className="mx-auto max-w-5xl">{children}</div>
+      </main>
     </div>
   );
 }

@@ -30,12 +30,12 @@ export default async function PublicSchedulePage({
   const noteCounts = await getNoteCounts(supabase, upcomingDates[0], upcomingDates[upcomingDates.length - 1]);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-5 px-5 py-8">
+    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-5 px-5 py-8 md:max-w-3xl">
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Logo7 size={22} />
           <div>
-            <h1 className="text-lg font-bold">7반 교시별 일정</h1>
+            <h1 className="text-lg font-bold">와부고 7반 교시별 일정</h1>
             <p className="text-xs text-[var(--color-ink-soft)]">로그인 없이 볼 수 있어요</p>
           </div>
         </div>

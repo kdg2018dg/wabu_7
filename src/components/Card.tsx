@@ -36,7 +36,7 @@ export function Pill({
   };
   return (
     <span
-      className={`inline-flex items-center rounded-[var(--radius-pill)] px-3 py-1 text-xs font-semibold ${tones[tone]}`}
+      className={`inline-flex items-center whitespace-nowrap rounded-[var(--radius-pill)] px-3 py-1 text-xs font-semibold ${tones[tone]}`}
     >
       {children}
     </span>
