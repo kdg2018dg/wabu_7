@@ -64,9 +64,16 @@ export function RankingsClient({ userId }: { userId: string }) {
       </Card>
 
       <Card className="divide-y divide-[var(--color-line)]">
-        {rows.length === 0 && (
+        {rows.length === 0 && !data.rpcError && (
           <p className="px-4 py-8 text-center text-sm text-[var(--color-ink-soft)]">
             아직 승인된 공부시간이 없어요.
+          </p>
+        )}
+        {data.rpcError && (
+          <p className="px-4 py-8 text-center text-sm font-medium text-[var(--color-rose)]">
+            랭킹 데이터를 불러오는 중 오류가 발생했어요. 관리자에게 문의해주세요.
+            <br />
+            <span className="text-xs text-[var(--color-ink-soft)]">({data.rpcError})</span>
           </p>
         )}
         {rows.map((r) => {

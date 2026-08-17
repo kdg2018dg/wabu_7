@@ -135,7 +135,6 @@ export function PeriodNotes({
               <input
                 type="file"
                 accept="image/*"
-                capture="environment"
                 className="hidden"
                 onChange={(e) => onFileChange(e.target.files?.[0] ?? null)}
               />
@@ -145,7 +144,7 @@ export function PeriodNotes({
               <img src={previewUrl} alt="첨부할 사진 미리보기" className="h-10 w-10 rounded-lg object-cover" />
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {

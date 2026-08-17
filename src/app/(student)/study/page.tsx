@@ -313,7 +313,7 @@ export default function StudySubmitPage() {
                 />
               </label>
 
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <ModeButton
                   active={entry.mode === "duration"}
                   onClick={() => updateEntry(entry.key, { mode: "duration" })}
@@ -329,7 +329,7 @@ export default function StudySubmitPage() {
               </div>
 
               {entry.mode === "duration" ? (
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <label className="flex flex-1 flex-col gap-1.5 text-sm font-medium">
                     시간
                     <input
@@ -358,7 +358,7 @@ export default function StudySubmitPage() {
                   </label>
                 </div>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <label className="flex flex-1 flex-col gap-1.5 text-sm font-medium">
                     시작
                     <input
@@ -398,7 +398,6 @@ export default function StudySubmitPage() {
                       <input
                         type="file"
                         accept="image/*"
-                        capture="environment"
                         className="hidden"
                         onChange={(e) => onFileChange(entry.key, e.target.files?.[0] ?? null)}
                       />
@@ -411,7 +410,6 @@ export default function StudySubmitPage() {
                     <input
                       type="file"
                       accept="image/*"
-                      capture="environment"
                       className="hidden"
                       onChange={(e) => onFileChange(entry.key, e.target.files?.[0] ?? null)}
                     />

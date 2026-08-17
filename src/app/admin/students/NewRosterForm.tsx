@@ -21,7 +21,7 @@ export function NewRosterForm() {
           }
         })
       }
-      className="flex gap-2"
+      className="flex items-center gap-2"
     >
       <input name="student_number" placeholder="학번" required className="input !min-h-10 text-sm" />
       <input name="name" placeholder="이름" required className="input !min-h-10 text-sm" />

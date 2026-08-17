@@ -7,6 +7,7 @@ export interface RankingsResponse {
   classTotal: number;
   weekStart: string;
   weekEnd: string;
+  rpcError?: string;
 }
 
 async function fetchRankings(week?: string): Promise<RankingsResponse> {

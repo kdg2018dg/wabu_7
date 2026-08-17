@@ -34,7 +34,7 @@ export function EventCard({ event }: { event: CalendarEvent & { updated_by_profi
               </p>
             )}
           </div>
-          <div className="flex shrink-0 gap-1.5">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button onClick={() => setEditing(true)} className="btn-ghost !min-h-8 px-3 text-xs">
               수정
             </button>
@@ -74,7 +74,7 @@ export function EventCard({ event }: { event: CalendarEvent & { updated_by_profi
       >
         <input name="title" defaultValue={event.title} required className="input !min-h-10 text-sm" />
         <input type="hidden" name="event_date" value={event.event_date} />
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <input type="time" name="start_time" defaultValue={event.start_time ?? ""} className="input !min-h-10 text-sm" />
           <input type="time" name="end_time" defaultValue={event.end_time ?? ""} className="input !min-h-10 text-sm" />
         </div>
@@ -92,7 +92,7 @@ export function EventCard({ event }: { event: CalendarEvent & { updated_by_profi
         <textarea name="description" defaultValue={event.description ?? ""} placeholder="설명 (선택)" className="input text-sm" />
         <ColorPicker name="color" defaultValue={event.color ?? ""} />
         {error && <p className="text-xs font-medium text-[var(--color-rose)]">{error}</p>}
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <button type="button" onClick={() => setEditing(false)} className="btn-ghost flex-1 !min-h-9 text-sm">
             취소
           </button>

@@ -45,7 +45,7 @@ export function ExportPanel() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         <label className="flex flex-1 flex-col gap-1 text-xs font-medium">
           시작일 (선택)
           <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="input !min-h-9 text-sm" />

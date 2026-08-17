@@ -38,7 +38,7 @@ export function NewEventForm({ defaultDate }: { defaultDate: string }) {
       >
         <input name="title" placeholder="제목" required className="input !min-h-10 text-sm" />
         <input type="date" name="event_date" defaultValue={defaultDate} required className="input !min-h-10 text-sm" />
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <input type="time" name="start_time" className="input !min-h-10 text-sm" />
           <input type="time" name="end_time" className="input !min-h-10 text-sm" />
         </div>
@@ -64,7 +64,7 @@ export function NewEventForm({ defaultDate }: { defaultDate: string }) {
           <ColorPicker name="color" />
         </div>
         {error && <p className="text-xs font-medium text-[var(--color-rose)]">{error}</p>}
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <button type="button" onClick={() => setOpen(false)} className="btn-ghost flex-1 !min-h-10 text-sm">
             취소
           </button>

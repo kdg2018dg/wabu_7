@@ -39,7 +39,7 @@ export function AnnouncementCard({ announcement }: { announcement: AnnouncementW
             중요 공지로 표시
           </label>
           {error && <p className="text-xs font-medium text-[var(--color-rose)]">{error}</p>}
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <button type="button" onClick={() => setEditing(false)} className="btn-ghost flex-1 !min-h-9 text-sm">
               취소
             </button>
@@ -59,7 +59,7 @@ export function AnnouncementCard({ announcement }: { announcement: AnnouncementW
           {announcement.is_important && <Pill tone="rose">중요</Pill>}
           <p className="text-sm font-bold">{announcement.title}</p>
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <button onClick={() => setEditing(true)} className="text-xs font-semibold text-[var(--color-brand)]">
             수정
           </button>

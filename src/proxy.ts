@@ -4,6 +4,13 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // 세션 쿠키가 아예 없으면(로그인한 적 없는 방문자) 갱신할 것도 없으므로
+  // Supabase Auth 서버 왕복 자체를 건너뛴다 — 공개 페이지(/schedule 등) 방문 속도 개선.
+  const hasAuthCookie = request.cookies.getAll().some((c) => c.name.startsWith("sb-"));
+  if (!hasAuthCookie) {
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

@@ -13,7 +13,7 @@ export interface RankingRow {
 export async function getWeeklyRankings(
   supabase: SupabaseClient,
   referenceDate?: string
-): Promise<{ rows: RankingRow[]; classTotal: number; weekStart: string; weekEnd: string }> {
+): Promise<{ rows: RankingRow[]; classTotal: number; weekStart: string; weekEnd: string; rpcError?: string }> {
   const { start, end } = getWeekRange(referenceDate);
 
   const { data, error } = await supabase.rpc("weekly_rankings", {
@@ -21,7 +21,9 @@ export async function getWeeklyRankings(
     week_end: end,
   });
 
-  if (error || !data) return { rows: [], classTotal: 0, weekStart: start, weekEnd: end };
+  if (error || !data) {
+    return { rows: [], classTotal: 0, weekStart: start, weekEnd: end, rpcError: error?.message };
+  }
 
   const rows: RankingRow[] = data.map(
     (r: {

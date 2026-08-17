@@ -45,7 +45,7 @@ export default async function AdminStudySessionsPage({
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-lg font-bold">공부 인증 관리 · 승인 대기 {pendingCount}건</h1>
-        <form className="flex gap-2">
+        <form className="flex items-center gap-2">
           <select name="status" defaultValue={status ?? "pending"} className="input !min-h-9 !py-0 text-sm">
             <option value="all">전체 상태</option>
             <option value="pending">승인 대기</option>
