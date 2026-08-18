@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { dayOfWeekMonToFri, mergeTimetable, PERIODS } from "@/lib/schedule";
-import { getSignedImageUrls, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
+import { getPublicImageUrl, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
 import type { CalendarEvent, DailyPeriodNote } from "@/lib/database.types";
 import type { TimetableRow } from "@/lib/schedule";
 
@@ -46,8 +46,6 @@ export async function getDateSchedule(
   );
 
   const notesTyped = (notes ?? []) as (DailyPeriodNote & { profiles: { name: string } | null })[];
-  const notePaths = notesTyped.map((n) => n.image_path).filter((p): p is string => !!p);
-  const urlMap = await getSignedImageUrls(supabase, notePaths, CLASS_PHOTOS_BUCKET);
 
   const periods: PeriodScheduleEntry[] = PERIODS.map((period) => {
     const cell = timetableMap.get(`${dow}-${period}`);
@@ -56,7 +54,7 @@ export async function getDateSchedule(
       .map((n) => ({
         ...n,
         authorName: n.profiles?.name,
-        imageUrl: n.image_path ? urlMap.get(n.image_path) ?? null : null,
+        imageUrl: n.image_path ? getPublicImageUrl(supabase, n.image_path, CLASS_PHOTOS_BUCKET) : null,
       }));
     return {
       period,

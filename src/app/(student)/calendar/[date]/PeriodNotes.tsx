@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { compressImage } from "@/lib/image-compress";
-import { newImagePath, getSignedImageUrl, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
+import { newImagePath, getPublicImageUrl, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
 import { addPeriodNote, deletePeriodNote } from "./actions";
 import { ClickableImage } from "@/components/Lightbox";
 import type { DailyPeriodNote } from "@/lib/database.types";
@@ -61,7 +61,7 @@ export function PeriodNotes({
 
     startTransition(async () => {
       await addPeriodNote({ noteDate, period, content, imagePath });
-      const imageUrl = imagePath ? await getSignedImageUrl(supabase, imagePath, CLASS_PHOTOS_BUCKET) : null;
+      const imageUrl = imagePath ? getPublicImageUrl(supabase, imagePath, CLASS_PHOTOS_BUCKET) : null;
       setNotes((prev) => [
         ...prev,
         {

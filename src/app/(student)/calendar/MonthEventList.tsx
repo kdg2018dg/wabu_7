@@ -44,31 +44,32 @@ export function MonthEventList({ days, today }: { days: DayData[]; today: string
           {days.map(({ dateStr, weekend, events, noteCount }) => {
             const dayNum = Number(dateStr.slice(-2));
             const isToday = dateStr === today;
+            const icons = [...new Set(events.map((ev) => CATEGORY_ICON[ev.category] ?? "📌"))].slice(0, 2);
             return (
               <Link
                 key={dateStr}
                 href={`/calendar/${dateStr}`}
-                className="flex aspect-square flex-col items-center justify-center gap-0.5 rounded-lg"
+                className="flex aspect-square flex-col items-center justify-center gap-0.5 rounded-lg px-0.5"
                 style={{
                   background: isToday ? "var(--color-brand)" : "transparent",
                   color: isToday ? "var(--color-brand-ink)" : weekend ? "var(--color-rose)" : "var(--color-ink)",
                 }}
               >
                 <span className="text-xs font-semibold">{dayNum}</span>
-                <span className="flex h-1.5 items-center gap-0.5">
-                  {events.length > 0 && (
-                    <span
-                      className="h-1 w-1 rounded-full"
-                      style={{ background: isToday ? "var(--color-brand-ink)" : "var(--color-brand)" }}
-                    />
+                <span className="flex h-3.5 items-center justify-center gap-0.5 text-[10px] leading-none">
+                  {icons.length > 0 ? (
+                    icons.map((icon, i) => <span key={i}>{icon}</span>)
+                  ) : (
+                    <span className="opacity-0">·</span>
                   )}
-                  {noteCount > 0 && (
-                    <span
-                      className="h-1 w-1 rounded-full"
-                      style={{ background: isToday ? "var(--color-brand-ink)" : "var(--color-mint)" }}
-                    />
-                  )}
+                  {events.length > 2 && <span className="text-[8px] opacity-70">+{events.length - 2}</span>}
                 </span>
+                {noteCount > 0 && (
+                  <span
+                    className="h-1 w-1 rounded-full"
+                    style={{ background: isToday ? "var(--color-brand-ink)" : "var(--color-mint)" }}
+                  />
+                )}
               </Link>
             );
           })}

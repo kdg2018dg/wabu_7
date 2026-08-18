@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getPublicImageUrl } from "@/lib/storage";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/Card";
 import type { Announcement } from "@/lib/database.types";
@@ -30,7 +31,10 @@ export default async function AnnouncementsPage() {
           </Card>
         )}
         {announcements.map((a) => (
-          <AnnouncementCard key={a.id} announcement={a} />
+          <AnnouncementCard
+            key={a.id}
+            announcement={{ ...a, imageUrl: a.image_path ? getPublicImageUrl(supabase, a.image_path) : null }}
+          />
         ))}
         {announcements.length === LIMIT && (
           <p className="px-1 text-center text-xs text-[var(--color-ink-soft)]">

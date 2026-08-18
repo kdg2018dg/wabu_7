@@ -3,12 +3,14 @@
 import { useRef, useState, useTransition } from "react";
 import { createAnnouncement } from "./actions";
 import { Card } from "@/components/Card";
+import { AnnouncementImageField } from "./AnnouncementImageField";
 
 export function NewAnnouncementForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [formKey, setFormKey] = useState(0);
 
   if (!open) {
     return (
@@ -21,6 +23,7 @@ export function NewAnnouncementForm() {
   return (
     <Card className="p-4">
       <form
+        key={formKey}
         ref={formRef}
         action={(formData) =>
           startTransition(async () => {
@@ -28,8 +31,8 @@ export function NewAnnouncementForm() {
             if (res.error) setError(res.error);
             else {
               setError(null);
-              formRef.current?.reset();
               setOpen(false);
+              setFormKey((k) => k + 1); // 이미지 필드 내부 상태까지 완전히 초기화
             }
           })
         }
@@ -37,6 +40,7 @@ export function NewAnnouncementForm() {
       >
         <input name="title" placeholder="제목" required className="input !min-h-10 text-sm" />
         <textarea name="content" placeholder="내용" required className="input text-sm" rows={4} />
+        <AnnouncementImageField />
         <label className="flex items-center gap-2 text-sm font-medium">
           <input type="checkbox" name="is_important" className="h-4 w-4" />
           중요 공지로 표시

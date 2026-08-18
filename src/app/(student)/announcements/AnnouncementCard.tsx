@@ -3,10 +3,13 @@
 import { useRef, useState, useTransition } from "react";
 import { updateAnnouncement, deleteAnnouncement } from "./actions";
 import { Card, Pill } from "@/components/Card";
+import { ClickableImage } from "@/components/Lightbox";
+import { AnnouncementImageField } from "./AnnouncementImageField";
 import type { Announcement } from "@/lib/database.types";
 
 interface AnnouncementWithNames extends Announcement {
   updated_by_profile?: { name: string } | null;
+  imageUrl?: string | null;
 }
 
 export function AnnouncementCard({ announcement }: { announcement: AnnouncementWithNames }) {
@@ -34,6 +37,7 @@ export function AnnouncementCard({ announcement }: { announcement: AnnouncementW
         >
           <input name="title" defaultValue={announcement.title} required className="input !min-h-10 text-sm" />
           <textarea name="content" defaultValue={announcement.content} required className="input text-sm" rows={4} />
+          <AnnouncementImageField initialPreviewUrl={announcement.imageUrl} />
           <label className="flex items-center gap-2 text-sm font-medium">
             <input type="checkbox" name="is_important" defaultChecked={announcement.is_important} className="h-4 w-4" />
             중요 공지로 표시
@@ -78,6 +82,13 @@ export function AnnouncementCard({ announcement }: { announcement: AnnouncementW
         </div>
       </div>
       <p className="whitespace-pre-line text-sm text-[var(--color-ink-soft)]">{announcement.content}</p>
+      {announcement.imageUrl && (
+        <ClickableImage
+          src={announcement.imageUrl}
+          alt={announcement.title}
+          className="mt-2 max-h-64 w-full rounded-xl object-cover"
+        />
+      )}
       <p className="mt-2 text-[11px] text-[var(--color-ink-soft)]">
         {new Date(announcement.published_at).toLocaleDateString("ko-KR")}
         {announcement.updated_by_profile?.name && ` · ${announcement.updated_by_profile.name}님이 마지막으로 수정`}

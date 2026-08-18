@@ -73,6 +73,7 @@ export interface Announcement {
   title: string;
   content: string;
   is_important: boolean;
+  image_path: string | null;
   published_at: string;
   expires_at: string | null;
   created_by: string | null;

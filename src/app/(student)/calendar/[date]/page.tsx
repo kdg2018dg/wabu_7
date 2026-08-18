@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { getSignedImageUrls, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
+import { getPublicImageUrl, CLASS_PHOTOS_BUCKET } from "@/lib/storage";
 import { formatDateKorean } from "@/lib/time";
 import { dayOfWeekMonToFri, mergeTimetable, PERIODS, isWeekend } from "@/lib/schedule";
 import { PageHeader } from "@/components/PageHeader";
@@ -50,12 +50,10 @@ export default async function CalendarDatePage({ params }: { params: Promise<{ d
     (overrides ?? []) as TimetableRow[]
   );
 
-  const notePaths = (notes ?? []).map((n) => n.image_path).filter((p): p is string => !!p);
-  const noteUrlMap = await getSignedImageUrls(supabase, notePaths, CLASS_PHOTOS_BUCKET);
   const notesWithUrls = (notes ?? []).map((n) => ({
     ...n,
     authorName: n.profiles?.name,
-    imageUrl: n.image_path ? noteUrlMap.get(n.image_path) ?? null : null,
+    imageUrl: n.image_path ? getPublicImageUrl(supabase, n.image_path, CLASS_PHOTOS_BUCKET) : null,
   }));
 
   return (

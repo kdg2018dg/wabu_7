@@ -112,7 +112,7 @@ export default async function CalendarPage({
                     {i + 1}
                   </p>
                   <div className="mt-1 flex flex-col gap-0.5">
-                    {dayEvents.slice(0, 2).map((ev) => (
+                    {dayEvents.slice(0, 3).map((ev) => (
                       <span
                         key={ev.id}
                         className="truncate rounded px-1 py-0.5 text-[10px] font-medium"
@@ -125,7 +125,7 @@ export default async function CalendarPage({
                       </span>
                     ))}
                     {dayEvents.length > 2 && (
-                      <span className="text-[10px] text-[var(--color-ink-soft)]">+{dayEvents.length - 2}</span>
+                      <span className="text-[10px] text-[var(--color-ink-soft)]">+{dayEvents.length - 3}</span>
                     )}
                     {(noteCounts.get(dateStr) ?? 0) > 0 && (
                       <span className="text-[10px] font-bold text-[var(--color-brand)]">

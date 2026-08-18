@@ -48,4 +48,13 @@ export async function getSignedImageUrls(
   return map;
 }
 
+/**
+ * class-photos 는 공개(public) 버킷이라 서명이 필요 없다 — URL을 즉석에서 조립만 하면 되므로
+ * 네트워크 왕복이 전혀 없고, 로그인 여부와 관계없이 항상 같은 URL로 접근 가능하다.
+ * (개인 인증 사진이 있는 study-photos 는 비공개 버킷이라 여전히 서명 URL이 필요하다.)
+ */
+export function getPublicImageUrl(supabase: SupabaseClient, path: string, bucket: string = CLASS_BUCKET) {
+  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+}
+
 export { STUDY_BUCKET as STUDY_PHOTOS_BUCKET, CLASS_BUCKET as CLASS_PHOTOS_BUCKET };
