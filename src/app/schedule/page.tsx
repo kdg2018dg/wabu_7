@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { getDateSchedule, getNoteCounts } from "@/lib/period-schedule";
 import { getWeeklyRankings } from "@/lib/queries";
@@ -10,6 +11,8 @@ import { ClickableImage } from "@/components/Lightbox";
 import { PeriodScheduleReadOnly } from "@/components/PeriodScheduleReadOnly";
 import { DatePickerNav } from "@/components/DatePickerNav";
 import { PublicMonthGrid } from "@/components/PublicMonthGrid";
+import { MealCard } from "@/components/MealCard";
+import { Skeleton } from "@/components/Skeleton";
 import type { CalendarEvent, Announcement } from "@/lib/database.types";
 
 function addDays(dateStr: string, delta: number) {
@@ -143,6 +146,11 @@ export default async function PublicSchedulePage({
           다음날 →
         </Link>
       </div>
+
+      {/* 급식 정보 — 별도의 작은 칸으로, 일정/캘린더 시스템과는 분리해서 표시 */}
+      <Suspense key={date} fallback={<Skeleton className="h-16 w-full" />}>
+        <MealCard date={date} />
+      </Suspense>
 
       <PeriodScheduleReadOnly schedule={schedule} />
 

@@ -7,6 +7,7 @@ import { todayKST, formatDateKorean } from "@/lib/time";
 import { Logo7 } from "@/components/Logo7";
 import { PeriodScheduleReadOnly } from "@/components/PeriodScheduleReadOnly";
 import { DatePickerNav } from "@/components/DatePickerNav";
+import { MealCard } from "@/components/MealCard";
 import { Skeleton, SkeletonList } from "@/components/Skeleton";
 import { HomeSecondary } from "./HomeSecondary";
 
@@ -84,6 +85,14 @@ export default async function HomePage({
         </div>
 
         <p className="mb-2 text-sm font-bold">{formatDateKorean(date)}</p>
+
+        {/* 급식 정보 — 별도의 작은 칸으로, 캘린더/일정 시스템과는 분리해서 표시 */}
+        <div className="mb-3">
+          <Suspense key={date} fallback={<Skeleton className="h-16 w-full" />}>
+            <MealCard date={date} />
+          </Suspense>
+        </div>
+
         <PeriodScheduleReadOnly schedule={schedule} editHref={`/calendar/${date}`} />
       </section>
 
